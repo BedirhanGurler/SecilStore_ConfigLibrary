@@ -14,15 +14,16 @@ API ve MVC istemcisi ile birlikte gelir.
 ---
 
 ## 📁 Proje Yapısı
+SecilStore/
 │
-├── SecilStore.Api/ → RESTful Web API (ConfigItemController)
-├── SecilStore.Mvc/ → MVC UI projesi (Listeleme, Ekleme, Silme)
-├── SecilStore.Business/ → CRUD operasyonlarının logic tarafı
-├── SecilStore.Data/ → EF Core, DbContext ve Entity'ler
-├── SecilStore.Common/ → DTO'lar, Constants, Result Models, Validations, Enums
-├── SecilStore.Test/ → Unit Test projesi (NUnit, Moq)
-├── SecilStore.Library/ → Projenin ana fikri olan bağımsız kütüphane
-├── SecilStore.TestConsoleApp/ → Kütüphaneyi test ettiğim console uygulaması
+├── 📡 SecilStore.Api/              → RESTful Web API (ConfigItemController)
+├── 🖥️ SecilStore.Mvc/              → MVC UI projesi (Listeleme, Ekleme, Silme)
+├── 🧠 SecilStore.Business/         → CRUD operasyonlarının logic tarafı
+├── 💾 SecilStore.Data/             → EF Core, DbContext ve Entity'ler
+├── 📦 SecilStore.Common/           → DTO'lar, Constants, Result Models, Validations, Enums
+├── 🧪 SecilStore.Test/             → Unit Test projesi (NUnit, Moq)
+├── 📚 SecilStore.Library/          → Projenin ana fikri olan bağımsız kütüphane
+├── 🧪 SecilStore.TestConsoleApp/   → Kütüphaneyi test ettiğim console uygulaması
 
 ---
 
