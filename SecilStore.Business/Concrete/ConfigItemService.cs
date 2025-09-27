@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SecilStore.Business.Abstract;
 using SecilStore.Common.Constants.ResponseMessages;
 using SecilStore.Common.DTOs;
@@ -23,7 +24,7 @@ namespace SecilStore.Business.Concrete
                     Name = dto.Name,
                     Type = dto.Type,
                     Value = dto.Value,
-                    IsActive = dto.IsActive,
+                    IsActive = true,
                     ApplicationName = dto.ApplicationName,
                     CreatedDate = now,
                     ModifiedDate = now
@@ -128,14 +129,58 @@ namespace SecilStore.Business.Concrete
             }
         }
 
-        public Task<IDataResult<ConfigurationItemData?>> GetById(Guid id)
+        public async Task<IDataResult<ConfigurationItemDto?>> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context = new ConfigDbContextFactory().CreateDbContext())
+            {
+                var qData = await (from c in context.ConfigurationItem.AsNoTracking()
+                                   where c.Id == id
+                                   select new ConfigurationItemDto
+                                   {
+                                       Id = c.Id,
+                                       Name = c.Name,
+                                       ApplicationName = c.ApplicationName,
+                                       Type = c.Type,
+                                       Value = c.Value,
+                                       IsActive = c.IsActive
+                                   }).FirstOrDefaultAsync();
+                if(qData != null)
+                {
+                    return new DataResult<ConfigurationItemDto?>(ResultStatus.Success, ResponseMessages.Success, qData);
+                }
+                else
+                {
+                    return new DataResult<ConfigurationItemDto?>(ResultStatus.Error, ResponseMessages.Error, null);
+                }
+            }
         }
 
-        public Task<IDataResult<ConfigurationItemDto?>> Update(ConfigurationItemDto dto)
+        public async Task<IDataResult<ConfigurationItemDto?>> Delete(ConfigurationItemDto dto)
         {
-            throw new NotImplementedException();
+            using (var context = new ConfigDbContextFactory().CreateDbContext())
+            {
+                try
+                {
+                    var now = DateTimeOffset.Now;
+
+                    var item = await context.ConfigurationItem.FirstOrDefaultAsync(p => p.Id == dto.Id);
+                    if (item != null)
+                    {
+                        item.IsActive = false;
+                        item.ModifiedDate = now;
+                        await context.SaveChangesAsync();
+                        return new DataResult<ConfigurationItemDto?>(ResultStatus.Success, dto);
+                    }
+                    else
+                    {
+                        return new DataResult<ConfigurationItemDto?>(ResultStatus.NotFound, dto);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new DataResult<ConfigurationItemDto?>(ResultStatus.Error, ex.ToString(), dto);
+                }
+            }
         }
     }
 }

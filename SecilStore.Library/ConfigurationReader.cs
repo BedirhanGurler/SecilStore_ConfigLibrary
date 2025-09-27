@@ -1,12 +1,10 @@
-﻿using SecilStore.Business.Concrete;
+﻿using SecilStore.Business.Abstract;
+using SecilStore.Business.Concrete;
+using SecilStore.Data.Model;
 using SecilStore.Library;
-using SecilStore.Data.Model; // Eğer Business'ta bıraktıysan, yoksa ConfigLib içinde de tanımlayabilirsin.
 
 namespace SecilStore.ConfigLib
 {
-    /// <summary>
-    /// Kütüphane dışarıya açılan ana sınıf.
-    /// </summary>
     public class ConfigurationReader
     {
         private readonly ConfigurationService _service;
@@ -20,6 +18,13 @@ namespace SecilStore.ConfigLib
             var repository = new ConfigItemService<ConfigurationItem>();
             _service = new ConfigurationService(repository, applicationName, intervalInMs);
         }
+
+        //// Testlerde kullanılacak overload constructor
+        //public ConfigurationReader(IConfigItemService<ConfigurationItem> repository, string applicationName, int intervalInMs)
+        //{
+        //    _service = new ConfigurationService(repository, applicationName, intervalInMs);
+        //}
+
 
         /// <summary>
         /// Config değerini generic tip dönüşüyle getirir.

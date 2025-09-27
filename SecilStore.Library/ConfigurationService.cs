@@ -27,7 +27,7 @@ namespace SecilStore.Library
             _intervalInMs = intervalInMs;
             _cache = new ConcurrentDictionary<string, string>();
 
-            // İlk yükleme (senkron)
+            // İlk senkron yükleme
             Task.Run(async () => await ReloadConfigs()).GetAwaiter().GetResult();
 
             StartTimer();

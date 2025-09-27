@@ -53,5 +53,27 @@ namespace SecilStore.API.Controllers
             }
             return await _configItemRepository.GetAllActives();
         }
+
+        [HttpGet]
+        [Route($"~{HttpConfigItemRequestUrl.GetById}")]
+        public async Task<IDataResult<ConfigurationItemDto?>> GetById(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new DataResult<ConfigurationItemDto?>(_modelStateResponseService.HandleErrorMessage(ModelState));
+            }
+            return await _configItemRepository.GetById(id);
+        }
+
+        [HttpPut]
+        [Route($"~{HttpConfigItemRequestUrl.Delete}")]
+        public async Task<IDataResult<ConfigurationItemDto?>> Delete(ConfigurationItemDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new DataResult<ConfigurationItemDto?>(_modelStateResponseService.HandleErrorMessage(ModelState));
+            }
+            return await _configItemRepository.Delete(dto);
+        }
     }
 }
